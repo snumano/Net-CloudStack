@@ -188,7 +188,7 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.00018
+Version 0.01001
 
 =cut
 
@@ -210,13 +210,14 @@ our $VERSION = '0.00018';
     );
 
     # CloudStack API Methods
-    $api->listVirtualMachines();         # no argument.
-    $api->listVirtualMachines("id=123"); # one argument.
+    $api->proc($cmd, $opt);
+    $api->proc("listVirtualMachines");
+    $api->proc("listVirtualMachines","id=123");
 
-    $api->deployVirtualMachine("serviceofferingid=1&templateid=1&zoneid=1"); # use & for some arguments.
+    $api->proc("deployVirtualMachine","serviceofferingid=1&templateid=1&zoneid=1"); # some IDs are depend on your environment.
 
     # Original Methods
-    print $api->url; # print generated url
+    print $api->url;      # print generated url
     print $api->response; # print API response
 
 =head1 METHODS
@@ -233,17 +234,17 @@ Followings are some examples for API command,
 
 =head2 listVirtualMachines
 
-    $api->listVirtualMachines()
-    $api->listVirtualMachines("id=$id")
+    $api->proc("listVirtualMachines")
+    $api->proc("listVirtualMachines","id=$id")
 
 =head2 deployVirtualMachine
 
-    $api->deployVirtualMachine("serviceoffeingid=$serviceoffeingid&templateid=$templateid&zoneid=$zoneid")
+    $api->proc("deployVirtualMachine","serviceoffeingid=$serviceoffeingid&templateid=$templateid&zoneid=$zoneid")
 
 =head2 startVirtualMachine/stopVirtualMachine
 
-    $api-> startVirtualMachine("id=$id")
-    $api->stopVirtualMachine("id=$id")
+    $api->proc("startVirtualMachine","id=$id")
+    $api->proc("stopVirtualMachine","id=$id")
 
 Followings are some examples for original command,
 
@@ -251,7 +252,7 @@ Followings are some examples for original command,
 
     $api->test()
 
-This method prints each defined attributes(base_url,api_path,api_key,secret_key,send_request,xml_json) and options.
+This method prints each defined attributes(base_url,api_path,api_key,secret_key,send_request,xml_json).
 
 =head2 url
 

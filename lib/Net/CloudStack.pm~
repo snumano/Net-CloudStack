@@ -188,11 +188,11 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.00017
+Version 0.00018
 
 =cut
 
-our $VERSION = '0.00017';
+our $VERSION = '0.00018';
 
 
 =head1 SYNOPSIS
