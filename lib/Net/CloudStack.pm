@@ -153,11 +153,12 @@ sub gen_url{
     my $url_encoded = $uri->encode($base64_encoded, 1); # encode_reserved option is set to 1
     my $url = $base_url."/".$api_path.$output_tmp."&signature=".$url_encoded;
     $self->url("$url");
+    
 }
 
 sub gen_response{
     my ($self) = shift;
-    my $ua = LWP::UserAgent->new();
+    my $ua = LWP::UserAgent->new(ssl_opts => { verify_hostname => 0 });
     my $ua_res = $ua->get($self->url);
 
     #json
@@ -188,7 +189,7 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.01001
+Version 0.01002
 
 =cut
 
