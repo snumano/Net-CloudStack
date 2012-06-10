@@ -1,5 +1,7 @@
 Revision history for Net-CloudStack
 
+0.01003  2012/06/10
+	 Add exception process.
 0.01002  2012/04/09
          Revised for ssl option.
 0.01001  2012/04/08

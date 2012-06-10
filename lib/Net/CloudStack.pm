@@ -12,6 +12,7 @@ use XML::Twig;
 use URI::Encode;
 use JSON;
 use Carp;
+use Data::Dumper;
 
 subtype 'CloudStack::YN'
     => as 'Str'
@@ -153,7 +154,7 @@ sub gen_url{
     my $url_encoded = $uri->encode($base64_encoded, 1); # encode_reserved option is set to 1
     my $url = $base_url."/".$api_path.$output_tmp."&signature=".$url_encoded;
     $self->url("$url");
-    
+#    print Dumper($url);
 }
 
 sub gen_response{
@@ -161,26 +162,32 @@ sub gen_response{
     my $ua = LWP::UserAgent->new(ssl_opts => { verify_hostname => 0 });
     my $ua_res = $ua->get($self->url);
 
-    #json
-    if($self->xml_json =~ /json/i){
-        my $obj = from_json($ua_res->decoded_content);
-        my $json = JSON->new->pretty(1)->encode($obj);
-        $self->response("$json");
+#    print Dumper($ua_res);
+    if($ua_res->{_content} =~ /^provider_error\:/){
+	$self->response($ua_res->{_content}."\n");
     }
-    
-    #xml
+
     else{
-        my $parser = XML::Simple->new;
-
-        my $xml = encode('utf8',$ua_res->decoded_content);#Please Change cp932 for Win.
-        my $twig = XML::Twig->new(pretty_print => 'indented', );
-        $twig->parse($xml);
-
-        my $response = $twig->sprint;
-        $self->response("$response");
+	#json
+	if($self->xml_json =~ /json/i){
+	    my $obj = from_json($ua_res->decoded_content);
+	    my $json = JSON->new->pretty(1)->encode($obj);
+	    $self->response("$json");
+	}
+	
+	#xml
+	else{
+	    my $parser = XML::Simple->new;
+	    
+	    my $xml = encode('utf8',$ua_res->decoded_content);#Please Change cp932 for Win.
+	    my $twig = XML::Twig->new(pretty_print => 'indented', );
+	    $twig->parse($xml);
+	    
+	    my $response = $twig->sprint;
+	    $self->response("$response");
+	}
     }
 }
-
 
 
 =head1 NAME
@@ -189,11 +196,11 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.01002
+Version 0.01003
 
 =cut
 
-our $VERSION = '0.01002';
+our $VERSION = '0.01003';
 
 
 =head1 SYNOPSIS
