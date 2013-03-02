@@ -1,5 +1,7 @@
 Revision history for Net-CloudStack
 
+0.01005  2013/03/02
+         Allows arrays to be passed to the CloudStack API(Thanks, geordish and DaveBell)
 0.01004  2012/09/11
          Add encode in json parse.
 0.01003  2012/06/10
